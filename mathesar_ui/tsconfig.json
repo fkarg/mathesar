@@ -5,7 +5,11 @@
     "moduleResolution": "node",
     "target": "esnext",
     "module": "esnext",
-    "types": ["svelte", "jest", "@testing-library/jest-dom", "js-cookie"],
+    "types": [
+      "svelte", "jest", "@testing-library/jest-dom",
+      "js-cookie", "@types/jest", "jest-playwright-preset",
+      "expect-playwright", "@types/jest-image-snapshot"
+    ],
     "importsNotUsedAsValues": "error",
     "strict": false,
     "isolatedModules": true,
@@ -22,5 +26,8 @@
       "@mathesar-components": ["src/components/index.ts"]
     }
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.svelte", "**.cjs", "**.config.js"]
+  "include": [
+    "src/**/*.d.ts", "src/**/*.ts", "src/**/*.svelte",
+    "integration-tests/**/*.ts", "**.cjs", "**.config.js"
+  ]
 }

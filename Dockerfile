@@ -4,7 +4,6 @@ FROM python:3.9-buster
 # See: http://lenguyenthedat.com/docker-cache/
 RUN apt update && apt install -y sudo
 
-# Add mathesar user
 ENV PYTHONUNBUFFERED=1
 ENV DOCKERIZE_VERSION v0.6.1
 
