@@ -9,6 +9,7 @@
     "build": "vite build",
     "test:unit": "jest -c jest.config.unit.cjs",
     "test:integration": "jest -c jest.config.integration.cjs",
+    "install-integ-deps": "npx playwright install-deps",
     "test": "npm run test:unit && npm run test:integration",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
