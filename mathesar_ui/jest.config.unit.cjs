@@ -11,6 +11,7 @@ function getAlias() {
 }
 
 module.exports = {
+  testMatch: ['<rootDir>/src/**/?(*.)test.ts'],
   transform: {
     '^.+\\.svelte$': [
       'svelte-jester',
