@@ -17,9 +17,9 @@ jobs:
         # Ignore the failure of a step and avoid terminating the job.
         continue-on-error: true
         with:
-          key: mathesar-docker-cache-integ-{hash}
+          key: mathesar-docker-cache-test-{hash}
           restore-keys: |
-            mathesar-docker-cache-integ-
+            mathesar-docker-cache-test-
 
       - name: Copy env file
         run: cp .env.example .env
@@ -34,9 +34,6 @@ jobs:
 
       - name: Build the stack
         run: docker-compose up --build -d
-
-      - name: Install playwright dependencies
-        run: docker exec mathesar_service_1 bash -c "cd mathesar_ui && npm run install-integ-deps"
 
       - name: Run e2e integ tests
         run: docker exec mathesar_service_1 bash -c "cd mathesar_ui && npm run test:integration"

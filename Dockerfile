@@ -28,5 +28,6 @@ COPY . .
 
 RUN npm install -g npm-force-resolutions
 RUN cd mathesar_ui && npm install --unsafe-perm && npm run build
+RUN cd mathesar_ui && npx playwright install --with-deps
 
 EXPOSE 8000 3000 6006
