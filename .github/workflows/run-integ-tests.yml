@@ -34,6 +34,7 @@ jobs:
 
       - name: Build the stack
         run: docker-compose up --build -d
+        wait-on: 'http://localhost:8000'
 
       - name: Run e2e integ tests
         run: docker exec mathesar_service_1 bash -c "cd mathesar_ui && npm run test:integration"
