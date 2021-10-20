@@ -1,9 +1,13 @@
-FROM python:3.9-buster
+FROM ubuntu:20.04
 
-# These should be run as a single command to avoid caching issues.
-# See: http://lenguyenthedat.com/docker-cache/
-RUN apt update && apt install -y sudo
+ARG DEBIAN_FRONTEND=noninteractive
+ARG TZ=America/Los_Angeles
 
+RUN apt-get update && apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get install -y nodejs wget python3.9 python3-pip libpq-dev python-dev
+
+# Add mathesar user
 ENV PYTHONUNBUFFERED=1
 ENV DOCKERIZE_VERSION v0.6.1
 
@@ -11,10 +15,6 @@ ENV DOCKERIZE_VERSION v0.6.1
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-
-# Install node
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt install -y nodejs
 
 # Change work directory
 WORKDIR /code/
@@ -26,7 +26,7 @@ RUN pip install -r requirements.txt --force-reinstall sqlalchemy-filters
 RUN pip install -r requirements-dev.txt
 COPY . .
 
-RUN sudo npm install -g npm-force-resolutions
+RUN npm install -g npm-force-resolutions
 RUN cd mathesar_ui && npm install --unsafe-perm && npm run build
 
 EXPOSE 8000 3000 6006
