@@ -1,0 +1,39 @@
+name: Run E2E integration tests
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # We only want to run on external PRs, since internal PRs are covered by "push"
+    # This prevents this from running twice on internal PRs
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - uses: actions/checkout@v2
+
+      # In this step, this action saves a list of existing images,
+      # the cache is created without them in the post run.
+      # It also restores the cache if it exists.
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+        with:
+          key: mathesar-docker-cache-{hash}
+          restore-keys: |
+            mathesar-docker-cache-
+
+      - name: Copy env file
+        run: cp .env.example .env
+
+      - name: Set mode to run in production for client
+        run: sed -i "s/MODE=DEVELOPMENT/MODE=PRODUCTION/" .env
+
+      # The code is checked out under uid 1001 - reset this to 1000 for the
+      # container to run tests successfully
+      - name: Fix permissions
+        run: sudo chown -R 1000:1000 .
+
+      - name: Build the stack
+        run: docker-compose up --build -d
+
+      - name: Run e2e integ tests
+        run: docker exec mathesar_service_1 bash -c "cd mathesar_ui && npm run test:integration"
