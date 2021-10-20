@@ -40,8 +40,8 @@ jobs:
         with:
           url: 'http://localhost:8080/'
           responseCode: 200
-          timeout: 2000
-          interval: 500
+          timeout: 120000
+          interval: 2000
 
       - name: Run e2e integ tests
         run: docker exec mathesar_service_1 bash -c "cd mathesar_ui && npm run test:integration"
