@@ -1,9 +1,5 @@
 FROM python:3.9-buster
 
-# These should be run as a single command to avoid caching issues.
-# See: http://lenguyenthedat.com/docker-cache/
-RUN apt update && apt install -y sudo && rm -rf /var/lib/apt/lists/*
-
 # Add mathesar user
 ENV PYTHONUNBUFFERED=1
 ENV DOCKERIZE_VERSION v0.6.1
@@ -13,9 +9,10 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-# Install node
+# These should be run as a single command to avoid caching issues.
+# See: http://lenguyenthedat.com/docker-cache/
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt update && apt install -y nodejs && rm -rf /var/lib/apt/lists/*
+RUN apt update && apt install -y nodejs sudo && rm -rf /var/lib/apt/lists/*
 
 # Change work directory
 WORKDIR /code/
